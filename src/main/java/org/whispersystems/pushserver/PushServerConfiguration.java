@@ -25,7 +25,7 @@ public class PushServerConfiguration extends Configuration {
 
   @JsonProperty
   @Valid
-  @NotNull
+  //@NotNull
   private ApnConfiguration apn;
 
   @JsonProperty

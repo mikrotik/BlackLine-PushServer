@@ -52,15 +52,15 @@ public class PushServer extends Application<PushServerConfiguration> {
     UnregisteredQueue   apnQueue            = new UnregisteredQueue(redisClient, environment.getObjectMapper(), servers, "apn");
     UnregisteredQueue   gcmQueue            = new UnregisteredQueue(redisClient, environment.getObjectMapper(), servers, "gcm");
 
-    APNSender apnSender = initializeApnSender(redisClient, apnQueue, config.getApnConfiguration());
+    //APNSender apnSender = initializeApnSender(redisClient, apnQueue, config.getApnConfiguration());
     GCMSender gcmSender = initializeGcmSender(gcmQueue, config.getGcmConfiguration());
 
-    environment.lifecycle().manage(apnSender);
+    //environment.lifecycle().manage(apnSender);
     environment.lifecycle().manage(gcmSender);
 
     environment.jersey().register(AuthFactory.binder(new BasicAuthFactory<>(serverAuthenticator, "PushServer", Server.class)));
-    environment.jersey().register(new PushController(apnSender, gcmSender));
-   // environment.jersey().register(new PushController(null, gcmSender));
+    //environment.jersey().register(new PushController(apnSender, gcmSender));
+    environment.jersey().register(new PushController(null, gcmSender));
     environment.jersey().register(new FeedbackController(gcmQueue, apnQueue));
 
     environment.healthChecks().register("Redis", new RedisHealthCheck(redisClient));
